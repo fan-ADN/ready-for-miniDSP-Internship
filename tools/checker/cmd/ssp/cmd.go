@@ -61,7 +61,7 @@ func runBidRequestOnce(host string, port int, floorPrice int) {
 		AppId:       appId,
 	}
 
-	url := fmt.Sprintf("http://%s:%d/req", host, port)
+	url := fmt.Sprintf("http://%s:%d/dsp/req", host, port)
 
 	sampleJson, _ := json.Marshal(bidRequest)
 

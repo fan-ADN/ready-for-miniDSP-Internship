@@ -31,7 +31,7 @@ func NewRootCmd(args []string) *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			listenHost := fmt.Sprintf("%s:%d", host, port)
 			fmt.Printf("Listen on: %s\n", listenHost)
-			http.HandleFunc("/predict", checkHandler)
+			http.HandleFunc("/ml/predict", checkHandler)
 			http.ListenAndServe(listenHost, nil)
 		},
 	}
