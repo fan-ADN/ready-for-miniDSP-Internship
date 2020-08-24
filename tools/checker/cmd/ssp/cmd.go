@@ -170,8 +170,6 @@ func runBidRequestFinal(host string, port int, floorPrice int) {
 		fmt.Printf("OK Responded %d ms\n", t.Milliseconds())
 	}
 
-	length := res.ContentLength
-
 	if verbose {
 		dumpRes, err := httputil.DumpResponse(res, true)
 		if err != nil {
@@ -182,6 +180,13 @@ func runBidRequestFinal(host string, port int, floorPrice int) {
 			fmt.Printf("----------------------------------\n")
 		}
 	}
+
+	if res.Header.Get("Content-Length") == "" {
+		fmt.Printf("Content-Lengthは必須ヘッダーです。")
+		return
+	}
+
+	length := res.ContentLength
 
 	body := make([]byte, length)
 	_, err = res.Body.Read(body)
