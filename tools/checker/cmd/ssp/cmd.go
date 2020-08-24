@@ -25,9 +25,9 @@ type BidRequest struct {
 }
 
 type BidResponse struct {
-	RequestId string `json:"request_id"`
-	URL       string `json:"url"`
-	Price     int    `json:"price"`
+	RequestId *string `json:"request_id"`
+	URL       *string `json:"url"`
+	Price     *int    `json:"price"`
 }
 
 func runBidRequestOnce(host string, port int, floorPrice int) {
@@ -199,13 +199,18 @@ func runBidRequestFinal(host string, port int, floorPrice int) {
 			return
 		}
 
-		if pres.RequestId != reqId {
+		if pres.RequestId == nil || pres.URL == nil || pres.Price == nil {
+			fmt.Printf("JSONフォーマットエラー\n")
+			return
+		}
+
+		if *pres.RequestId != reqId {
 			fmt.Printf("Request ID is ignore expected id is %s\n", reqId)
 		}
 
-		fmt.Printf("RequestID: %s\n", pres.RequestId)
-		fmt.Printf("URL      : %s\n", pres.URL)
-		fmt.Printf("Price    : %d\n", pres.Price)
+		fmt.Printf("RequestID: %s\n", *pres.RequestId)
+		fmt.Printf("URL      : %s\n", *pres.URL)
+		fmt.Printf("Price    : %d\n", *pres.Price)
 	} else {
 		fmt.Printf("No Contents\n")
 	}
