@@ -57,7 +57,7 @@ func runBidRequestOnce(host string, port int, floorPrice int) {
 		RequestId:   reqId,
 		RequestTime: tm.Format("20060102-150405.0000"),
 		UserId:      userId,
-		BidFloor:    30,
+		BidFloor:    floorPrice,
 		AppId:       appId,
 	}
 
@@ -66,7 +66,7 @@ func runBidRequestOnce(host string, port int, floorPrice int) {
 	sampleJson, _ := json.Marshal(bidRequest)
 
 	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(sampleJson))
-	req.Header.Set("User-Agent", "Inter Mini DSP Course Tools")
+	req.Header.Set("User-Agent", "Internship Mini DSP Course Tools")
 	req.Header.Set("Content-Type", "application/json")
 
 	res, err := client.Do(req)
@@ -76,24 +76,26 @@ func runBidRequestOnce(host string, port int, floorPrice int) {
 	}
 
 	if res.StatusCode != 200 {
-		fmt.Printf("Error: Status Code NOT 200 Got %d", res.StatusCode)
+		fmt.Printf("Error: Status Code NOT 200 Got %d\n", res.StatusCode)
 	} else {
-		fmt.Printf("OK")
+		fmt.Printf("OK\n")
 	}
 
 	if verbose {
 
-		dumpReq, err := httputil.DumpRequestOut(req, true)
+		dumpReq, err := httputil.DumpRequest(req, true)
 		if err != nil {
 			fmt.Printf("Error: %s\n", err)
+		} else {
+			fmt.Printf("%s\n", dumpReq)
 		}
-		fmt.Printf("%s\n", dumpReq)
 
 		dumpRes, err := httputil.DumpResponse(res, true)
 		if err != nil {
 			fmt.Println(err)
+		} else {
+			fmt.Printf("%s\n", dumpRes)
 		}
-		fmt.Printf("%s\n", dumpRes)
 	}
 }
 
@@ -124,16 +126,16 @@ func runBidRequestFinal(host string, port int, floorPrice int) {
 		RequestId:   reqId,
 		RequestTime: tm.Format("20060102-150405.0000"),
 		UserId:      userId,
-		BidFloor:    30,
+		BidFloor:    floorPrice,
 		AppId:       appId,
 	}
 
-	url := fmt.Sprintf("http://%s:%d/req", host, port)
+	url := fmt.Sprintf("http://%s:%d/dsp/req", host, port)
 
 	sampleJson, _ := json.Marshal(bidRequest)
 
 	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(sampleJson))
-	req.Header.Set("User-Agent", "Inter Mini DSP Course Tools")
+	req.Header.Set("User-Agent", "Internship Mini DSP Course Tools")
 	req.Header.Set("Content-Type", "application/json")
 
 	tmPost := time.Now()
@@ -149,7 +151,7 @@ func runBidRequestFinal(host string, port int, floorPrice int) {
 		return
 	} else {
 		t := tmReturn.Sub(tmPost)
-		fmt.Printf("OK Responded %d ms\n", t.Microseconds())
+		fmt.Printf("OK Responded %d ms\n", t.Milliseconds())
 	}
 
 	length := res.ContentLength
@@ -182,13 +184,15 @@ func runBidRequestFinal(host string, port int, floorPrice int) {
 		dumpReq, err := httputil.DumpRequestOut(req, true)
 		if err != nil {
 			fmt.Printf("Error: %s\n", err)
+		} else {
+			fmt.Printf("%s\n", dumpReq)
 		}
-		fmt.Printf("%s\n", dumpReq)
 
 		dumpRes, err := httputil.DumpResponse(res, true)
 		if err != nil {
 			fmt.Println(err)
+		} else {
+			fmt.Printf("%s\n", dumpRes)
 		}
-		fmt.Printf("%s\n", dumpRes)
 	}
 }

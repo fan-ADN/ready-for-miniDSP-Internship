@@ -2,7 +2,6 @@ package ssp
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/spf13/cobra"
 )
@@ -29,7 +28,7 @@ func NewRootCmd(args []string) *cobra.Command {
 
 	rootCmd.PersistentFlags().StringVar(&host, "host", "localhost", "Host Name")
 	rootCmd.PersistentFlags().IntVar(&port, "port", 8080, "Port Number")
-	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", true, "Verbose mode")
+	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "Verbose mode")
 
 	return rootCmd
 }
@@ -40,7 +39,6 @@ func newCheckCmd() *cobra.Command {
 		Short: "1回AdRequestを指定したURLに投げる。",
 		Run: func(cmd *cobra.Command, args []string) {
 			runBidRequestOnce(host, port, floor)
-			fmt.Printf("Target URL: %s:%d\n", host, port)
 		},
 	}
 	checkCmd.PersistentFlags().IntVar(&floor, "floor", 30, "Floor Price")
@@ -54,7 +52,6 @@ func newFinalCheckCmd() *cobra.Command {
 		Short: "AdRequestを投げる",
 		Run: func(cmd *cobra.Command, args []string) {
 			runBidRequestFinal(host, port, floor)
-			fmt.Printf("Target URL: %s:%d\n", host, port)
 		},
 	}
 	finalCheckCmd.PersistentFlags().IntVar(&floor, "floor", 30, "Floor Price")
