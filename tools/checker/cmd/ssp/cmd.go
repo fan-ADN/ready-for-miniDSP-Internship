@@ -69,6 +69,17 @@ func runBidRequestOnce(host string, port int, floorPrice int) {
 	req.Header.Set("User-Agent", "Internship Mini DSP Course Tools")
 	req.Header.Set("Content-Type", "application/json")
 
+	if verbose {
+		dumpReq, err := httputil.DumpRequestOut(req, true)
+		if err != nil {
+			fmt.Printf("Error: %s\n", err)
+		} else {
+			fmt.Printf("------------- Request -----------\n")
+			fmt.Printf("%s\n", dumpReq)
+			fmt.Printf("---------------------------------\n")
+		}
+	}
+
 	res, err := client.Do(req)
 	if err != nil {
 		fmt.Printf("Response Error: %s\n", err)
@@ -82,19 +93,13 @@ func runBidRequestOnce(host string, port int, floorPrice int) {
 	}
 
 	if verbose {
-
-		dumpReq, err := httputil.DumpRequest(req, true)
-		if err != nil {
-			fmt.Printf("Error: %s\n", err)
-		} else {
-			fmt.Printf("%s\n", dumpReq)
-		}
-
 		dumpRes, err := httputil.DumpResponse(res, true)
 		if err != nil {
 			fmt.Println(err)
 		} else {
+			fmt.Printf("------------- Response -----------\n")
 			fmt.Printf("%s\n", dumpRes)
+			fmt.Printf("----------------------------------\n")
 		}
 	}
 }
@@ -138,6 +143,17 @@ func runBidRequestFinal(host string, port int, floorPrice int) {
 	req.Header.Set("User-Agent", "Internship Mini DSP Course Tools")
 	req.Header.Set("Content-Type", "application/json")
 
+	if verbose {
+		dumpReq, err := httputil.DumpRequestOut(req, true)
+		if err != nil {
+			fmt.Printf("Error: %s\n", err)
+		} else {
+			fmt.Printf("------------- Request -----------\n")
+			fmt.Printf("%s\n", dumpReq)
+			fmt.Printf("---------------------------------\n")
+		}
+	}
+
 	tmPost := time.Now()
 	res, err := client.Do(req)
 	tmReturn := time.Now()
@@ -156,10 +172,21 @@ func runBidRequestFinal(host string, port int, floorPrice int) {
 
 	length := res.ContentLength
 
+	if verbose {
+		dumpRes, err := httputil.DumpResponse(res, true)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Printf("------------- Response -----------\n")
+			fmt.Printf("%s\n", dumpRes)
+			fmt.Printf("----------------------------------\n")
+		}
+	}
+
 	body := make([]byte, length)
 	_, err = res.Body.Read(body)
 	if err != nil && err != io.EOF {
-		fmt.Printf("JSONのフォーマッタが違っています\n")
+		fmt.Printf("内部エラー\n")
 		return
 	}
 
@@ -167,6 +194,10 @@ func runBidRequestFinal(host string, port int, floorPrice int) {
 		var pres BidResponse
 
 		err = json.Unmarshal(body, &pres)
+		if err != nil {
+			fmt.Printf("JSONフォーマットエラー\n")
+			return
+		}
 
 		if pres.RequestId != reqId {
 			fmt.Printf("Request ID is ignore expected id is %s\n", reqId)
@@ -179,20 +210,4 @@ func runBidRequestFinal(host string, port int, floorPrice int) {
 		fmt.Printf("No Contents\n")
 	}
 
-	if verbose {
-
-		dumpReq, err := httputil.DumpRequestOut(req, true)
-		if err != nil {
-			fmt.Printf("Error: %s\n", err)
-		} else {
-			fmt.Printf("%s\n", dumpReq)
-		}
-
-		dumpRes, err := httputil.DumpResponse(res, true)
-		if err != nil {
-			fmt.Println(err)
-		} else {
-			fmt.Printf("%s\n", dumpRes)
-		}
-	}
 }

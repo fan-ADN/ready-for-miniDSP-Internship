@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/fan-ADN/ready-for-miniDSP-Internship/tools/checker/cmd/dsp"
 	"github.com/fan-ADN/ready-for-miniDSP-Internship/tools/checker/cmd/ml"
 	"github.com/fan-ADN/ready-for-miniDSP-Internship/tools/checker/cmd/ssp"
 	"github.com/fan-ADN/ready-for-miniDSP-Internship/tools/checker/config"
@@ -25,6 +26,7 @@ func newRootCmd(args []string) *cobra.Command {
 	rootCmd.AddCommand(newVersionCmd())
 	rootCmd.AddCommand(ssp.NewRootCmd(args))
 	rootCmd.AddCommand(ml.NewRootCmd(args))
+	rootCmd.AddCommand(dsp.NewRootCmd(args))
 
 	return rootCmd
 }

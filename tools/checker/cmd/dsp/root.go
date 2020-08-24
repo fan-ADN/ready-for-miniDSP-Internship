@@ -104,7 +104,7 @@ func newServerCmd() *cobra.Command {
 		Use:   "server",
 		Short: "Normal Server Mode",
 		Run: func(cmd *cobra.Command, args []string) {
-			http.HandleFunc("/req", handler)
+			http.HandleFunc("/dsp/req", handler)
 			http.ListenAndServe(listenHost, nil)
 		},
 	}
