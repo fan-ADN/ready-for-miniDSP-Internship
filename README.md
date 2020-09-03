@@ -29,4 +29,4 @@ go build
 
 ## 事前ダウンロードファイル
 
-[adds.json](https://raw.githubusercontent.com/fan-ADN/ready-for-miniDSP-Internship/v1.0.4/adds.json)をダウンロードし、開発予定のディレクトリ配下に配置してください。
+[ads.json](https://raw.githubusercontent.com/fan-ADN/ready-for-miniDSP-Internship/v1.0.4/ads.json)をダウンロードし、開発予定のディレクトリ配下に配置してください。
